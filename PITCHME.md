@@ -45,19 +45,14 @@ open class SimpleApplication
 fun main(args: Array<String>) {
     SpringApplication.run(Application::class.java, *args)
 }
-
-
-// Define main class in Gradle build file
-springBoot {
-    mainClass = 'kotlin.demo.SimpleApplicationKt'
-}
 ```
-@[1-6](Define Spring Boot Application)
-@[3-6](Declare main class in Gradle build file)
+@[1-2](Define Spring Boot Application)
+@[4-6](Define main class as function)
 
 +++
 ## Spring - JPA Data Repositories
 ``` Kotlin
+@Entity
 data class Movie(@Id val id: Long, val title: String, val director: String)
 
 interface MovieRepository : CrudRepository<Movie, Long> {
@@ -65,8 +60,8 @@ interface MovieRepository : CrudRepository<Movie, Long> {
   fun findByDirector(director: String): List<Movie>
 }
 ```
-@[1](Define entity as data class)
-@[3-6](Define JPA Repository)
+@[1-2](Define entity as data class)
+@[4-7](Define JPA Repository)
 
 +++
 ## Spring Web MVC
@@ -110,6 +105,17 @@ class MovieController (val repository:MovieRepository) {
 - Reactive Streams
 
 +++
+
+
+``` Kotlin
+{
+    ("/movies" and accept(APPLICATION_JSON)).nest {
+        GET("/", movieHandler::findAll)
+        GET("/{id}", movieHandler::findOne)
+        GET("/actor/{actor}", movieHandler::findByActor)
+    }
+}
+```
 
 
 ---
