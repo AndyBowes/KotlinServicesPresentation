@@ -103,7 +103,7 @@ class MovieController (val repository:MovieRepository) {
 +++
 ## Deployment
 - Kotlin compiles to Java byte-code |
-- Builds typical Java JAR file
+- Builds typical Java JAR file |
 - Add Kotlin Dependencies |
   - kotlin-stdlib
   - additional libs for Java 7 & Java 8 features
@@ -179,7 +179,8 @@ class MovieRepository(val template: ReactiveMongoTemplate,
 
 ---
 ## Spark
-
+- Lightweight, expressive framework |
+  - Web
 
 
 ---
@@ -249,5 +250,12 @@ fun Application.main() {
 - Produces elegant & clean code |
 - Try It |
 
-++
++++
 ## Useful Links
+- Spring Framework/Kotlin
+  - https://spring.io/blog/2017/01/04/introducing-kotlin-support-in-spring-framework-5-0
+  - https://kotlinlang.org/docs/tutorials/spring-boot-restful.html
+- Spring WebFlux/Kotlin
+  - https://github.com/mixitconf/mixit
+- Spark http://sparkjava.com/
+- Ktor http://ktor.io/

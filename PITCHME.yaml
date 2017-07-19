@@ -1,5 +1,5 @@
 highlight : androidstudio
-logo : assets/logo.png
+logo : assets/images/Kotlin_Roundal_small.png
 footnote : "2017 - Leeds JVM Thing, Kotlin Evening"
 theme : moon
 theme-override : assets/css/theme.css
