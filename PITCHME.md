@@ -13,13 +13,6 @@
   - Clear & Concise Code
 
 ---
-## Coroutines
-- Coroutines |
-  - Experimental in Kotlin v1.1
-  - Simplification of asynchronous coding
-  - Lightweight threading
-
----
 ## Spring Integration
 - Kotlin & Spring just works |
   - All the familiar annotations & patterns
@@ -55,15 +48,17 @@ fun main(args: Array<String>) {
 ## Spring - JPA Data Repositories
 ``` Kotlin
 @Entity
-data class Movie(@Id val id: Long, val title: String, val director: String)
+data class Movie(@Id val id: Long,
+          val title: String,
+          val director: String)
 
 interface MovieRepository : CrudRepository<Movie, Long> {
 	fun findByTitle(title: String): List<Movie>
   fun findByDirector(director: String): List<Movie>
 }
 ```
-@[1-2](Define entity as data class)
-@[4-7](Define JPA Repository)
+@[1-4](Define entity as data class)
+@[6-9](Define JPA Repository)
 
 ---
 ## Spring Web MVC
@@ -180,16 +175,18 @@ class MovieRepository(val template: ReactiveMongoTemplate,
 ---
 ## Spark
 - Lightweight, expressive framework |
-  - Web
-
+  - Web or REST
+  - HTTP or Web Sockets
+- Kotlin support added April 2017
 
 ---
 ## Spark Example
 
 ``` Kotlin
-val userDao = UserDao()
+fun main(args: Array<String>) {
+  val userDao = UserDao()
 
-path("/users") {
+  path("/users") {
     get("/:id") { req, res ->
         userDao.findById(req.params("id").toInt())
     }
@@ -201,8 +198,13 @@ path("/users") {
         res.status(201)
         "ok"
     }
+  }
 }
 ```
+---
+Spark/Kotlin Documentation:
+> I have only worked with Kotlin for a few hours while writing this tutorial, but I’m already a very big fan of the language.
+>Everything just seems to make sense, and the interoperability with Java is great.
 
 ---
 ## Ktor
