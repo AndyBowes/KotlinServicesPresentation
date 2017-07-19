@@ -11,6 +11,9 @@
 - Expressiveness |
   - Removes Java boilerplate
   - Clear & Concise Code
+
+---
+## Coroutines
 - Coroutines |
   - Experimental in Kotlin v1.1
   - Simplification of asynchronous coding
@@ -34,7 +37,7 @@
   - @Component, @Async, @Transactional, @Cacheable
   - @Controller, @RestController, @Service or @Repository are automatically opened since these annotations are meta-annotated with @Component.
 
-+++
+---
 ## Spring Boot
 
 ``` Kotlin
@@ -48,7 +51,7 @@ fun main(args: Array<String>) {
 @[1-2](Define Spring Boot Application)
 @[4-6](Define main class as function)
 
-+++
+---
 ## Spring - JPA Data Repositories
 ``` Kotlin
 @Entity
@@ -62,7 +65,7 @@ interface MovieRepository : CrudRepository<Movie, Long> {
 @[1-2](Define entity as data class)
 @[4-7](Define JPA Repository)
 
-+++
+---
 ## Spring Web MVC
 
 ``` Kotlin
@@ -89,7 +92,7 @@ class MovieController (val repository:MovieRepository) {
 - Kotlin is now supported by Spring Initializr
 - Incorporated in IntelliJ
 
-+++
+---
 ## Spring Initializr Demo
 - Live Demo
   - Creation of simple application
@@ -99,31 +102,36 @@ class MovieController (val repository:MovieRepository) {
 
 +++
 ## Deployment
-- Kotlin compiles to Java byte-code
-- Needs Kotlin Standard Library
--
+- Kotlin compiles to Java byte-code |
+- Builds typical Java JAR file
+- Add Kotlin Dependencies |
+  - kotlin-stdlib
+  - additional libs for Java 7 & Java 8 features
 
-+++
+---
 ## Docker Deployment
 - Identical to Java Spring application
-- Dockerfile
+- Example Dockerfile
 ``` Shell
 FROM openjdk:alpine
 EXPOSE 8080
-ADD build/libs/kmdb-0.0.1.jar kmdb.jar
+ADD build/libs/myapplication-0.0.1.jar app.jar
 RUN sh -c 'touch /kmdb.jar'
-ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -jar /kmdb.jar" ]
+ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -jar /app.jar" ]
 ```
 
 +++
-## Spring - Reactive Programming
-- Spring Web Reactive |
-  - Alternative to Spring Web MVC
+## Spring WebFlux
+- Spring WebFlux |
+  - Reactive Alternative to Spring Web MVC
 - Spring Framework 5 |
+  - Reactor
 - Reactive Streams |
   - Mono - Single elements
   - Flux - Streams of elements
-+++
+- MongoDB or Redis Database Support |
+
+---
 ## Reactive Controller Mapping
 - Use Routing DSL to provide mapping of URIs to functions
 ``` Kotlin
@@ -136,13 +144,17 @@ ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -jar /kmdb.jar" ]
 }
 ```
 
+---
 ## Reactive Handler Functions
 ``` Kotlin
 @Component
 class MovieHandler(val repository: MovieRepository) {
-    fun findOne(req: ServerRequest) = ok().json().body(repository.findOne(req.pathVariable("id")))
-    fun findAll(req: ServerRequest) = ok().json().body(repository.findAll())
-    fun findByActor(req: ServerRequest) = ok().json().body(repository.findByActor(req.pathVariable("actor")))
+    fun findOne(req: ServerRequest) =
+          ok().json().body(repository.findOne(req.pathVariable("id")))
+    fun findAll(req: ServerRequest) =
+         ok().json().body(repository.findAll())
+    fun findByActor(req: ServerRequest) =
+         ok().json().body(repository.findByActor(req.pathVariable("actor")))
 }
 
 @Repository
@@ -150,21 +162,27 @@ class MovieRepository(val template: ReactiveMongoTemplate,
                       val objectMapper: ObjectMapper) {
     fun findAll(): Flux<Movie> = template.find<Movie>(Query().with(Sort.by("title")))
     fun findOne(id: String): Mono<Movie> = template.findById<Movie>(id)
-    fun findByActor(id: String): Flax<Movie> = template.findByActor<Movie>(id)
+    fun findByActor(id: String): Flux<Movie> = template.findByActor<Movie>(id)
 }
 ```
-@[1-6](Define Handler functions)
-@[8-14](Define Reactive Repository)
----
+@[1-9](Define Handler functions)
+@[10-16](Define Reactive Repository)
+
++++
 ## Alternative Frameworks
-- Spring is just framework |
+- Spring is not the only option |
 - Integrates with other Java frameworks |
   - Spark
   - Vertx
 - Kotlin specific frameworks |
   - Ktor
 
-+++
+---
+## Spark
+
+
+
+---
 ## Spark Example
 
 ``` Kotlin
@@ -185,18 +203,51 @@ path("/users") {
 }
 ```
 
-+++
+---
+## Ktor
+- Lightweight framework |
+- Functional interface via lambda functions |
+- Asynchronous by design |
+- Hosted |
+  - Servlet 3.0+ (e.g. Tomcat)
+- Standalone |
+  - Netty or Jetty
+
+---
 ## Ktor Example
 
+- Simple JSON REST Service
 ``` Kotlin
-
+fun Application.main() {
+    install(DefaultHeaders)
+    install(CallLogging)
+    install(GsonSupport) {
+        setPrettyPrinting()
+    }
+    ...
+    routing {
+        get("/v1") {
+            call.respond(model)
+        }
+        get("/v1/item/{key}") {
+            val item = repository.getItem(key)
+            if (item == null)
+                call.respond(HttpStatusCode.NotFound)
+            else
+                call.respond(item)
+        }
+    }
+}
 ```
 
 +++
 ## Summary
 - Kotlin is a viable option for server-side development |
--
--
+- Easy transition from Java |
+ - Use identical build & deploy process
+- Latest frameworks have inbuilt Kotlin support |
+- Produces elegant & clean code |
+- Try It |
 
 ++
 ## Useful Links
