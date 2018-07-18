@@ -1,7 +1,5 @@
 ## Kotlin REST Applications
 #### Andy Bowes
-### The JVM Thing
-##### 20<sup>th</sup> July 2017
 
 +++
 ## Benefits of Kotlin
@@ -157,12 +155,48 @@ class MovieRepository(val template: ReactiveMongoTemplate,
                       val objectMapper: ObjectMapper) {
     fun findAll(): Flux<Movie> = template.find<Movie>(Query().with(Sort.by("title")))
     fun findOne(id: String): Mono<Movie> = template.findById<Movie>(id)
-    fun findByActor(id: String): Flux<Movie> = template.findByActor<Movie>(id)
+    fun findByActor(name: String): Flux<Movie> = template.findByActor<Movie>(name)
 }
 ```
 @[1-9](Define Handler functions)
 @[10-16](Define Reactive Repository)
 
+---
+## Spring FU
+- *Spring Fu*ntional APIs
+- Experimental microframework |
+  - Provides a test bed for future Spring Boot releases |
+  - Uses a DSL to provide functional definition of Beans & resources |
+- Intended to provide a modular approach to using Spring Boot |
+- Explicit configuration: minimal core, no conventions, no classpath detection |
+- Minimal reflection usage, no classpath scanning, no annotation processing required |
+- Run as native image with instant startup via GraalVM support |
+- *Not production ready* |
+---
+## Spring FU Sample Application
+``` Kotlin
+fun main(args: Array<String>) = application {
+	bean<UserRepository>()
+	bean<UserHandler>()
+	webflux {
+		val port = if (profiles.contains("test")) 8181 else 8080
+		server(netty(port)) {
+			mustache()
+			codecs {
+				jackson()
+			}
+			router {
+				val userHandler = ref<UserHandler>()
+				GET("/", userHandler::listView)
+				GET("/api/user", userHandler::listApi)
+			}
+		}
+	}
+}.run(await = true)
+```
+@[2-3](Define Beans)
+@[5-6](Define Netty Server)
+@[12-15](Define URL Mappings)
 +++
 ## Alternative Frameworks
 - Spring is not the only option |
