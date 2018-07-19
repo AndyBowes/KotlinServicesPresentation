@@ -165,11 +165,9 @@ class MovieRepository(val template: ReactiveMongoTemplate,
 ## Spring FU
 - *Spring Fu*ntional APIs
 - Experimental microframework |
-  - Provides a test bed for future Spring Boot releases |
   - Uses a DSL to provide functional definition of Beans & resources |
 - Intended to provide a modular approach to using Spring Boot |
 - Explicit configuration: minimal core, no conventions, no classpath detection |
-- Minimal reflection usage, no classpath scanning, no annotation processing required |
 - Run as native image with instant startup via GraalVM support |
 - *Not production ready* |
 ---
@@ -196,7 +194,7 @@ fun main(args: Array<String>) = application {
 ```
 @[2-3](Define Beans)
 @[5-6](Define Netty Server)
-@[12-15](Define URL Mappings)
+@[11-15](Define URL Mappings)
 +++
 ## Alternative Frameworks
 - Spring is not the only option |
@@ -211,7 +209,7 @@ fun main(args: Array<String>) = application {
 - Lightweight, expressive framework |
   - Web or REST
   - HTTP or Web Sockets
-- Kotlin support added April 2017
+- Kotlin support added April 2017 |
 
 ---
 ## Spark Example
